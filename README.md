@@ -36,6 +36,28 @@ does the same job.
 
 ## Adopting it in a project
 
+The quick way: run `/feature-announcer:setup` in the app's repo. It does all
+four steps below for local development:
+
+- Claude proposes the product name, audience and local API address, and you
+  confirm them.
+- The setup script enables the plugin and writes `announcer.json`. It keeps
+  your other settings and never overwrites an existing `announcer.json`.
+- It git-ignores `.env.local`, then writes a generated publish token and the
+  API address there. It never prints the token.
+- If the app has no endpoint yet, Claude builds one from
+  [`skills/setup/backend-contract.md`](skills/setup/backend-contract.md): the
+  routes, a table, a sender that waits `delayMinutes`, and an admin cancel. It
+  sends through the app's existing notification code, or through a stub it
+  tells you about.
+- `node scripts/setup.mjs verify` then tests the running endpoint.
+
+Production still needs the token set as a secret and the API address, which
+setup lists at the end. Commit everything except `.env.local`. Teammates are
+then prompted to install the plugin when they trust the folder.
+
+By hand:
+
 1. **Enable it** in the project's `.claude/settings.json` (or install it
    once for yourself, as above):
 
